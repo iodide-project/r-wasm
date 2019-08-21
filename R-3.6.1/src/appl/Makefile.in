@@ -11,10 +11,11 @@ subdir = src/appl
 include $(top_builddir)/Makeconf
 
 SOURCES_C = \
-	integrate.c interv.c maxcol.c optim.c pretty.c uncmin.c
-SOURCES_F = \
-	dchdc.f dpbfa.f dpbsl.f dpoco.f dpodi.f dpofa.f dposl.f dqrdc.f \
-	dqrdc2.f dqrls.f dqrsl.f dqrutl.f dsvdc.f dtrco.f dtrsl.f
+	integrate.c interv.c maxcol.c optim.c pretty.c uncmin.c dtrsl.c dpofa.c dqrdc2.c dqrutl.c dpbfa.c dqrsl.c dqrdc.c dpbsl.c dsvdc.c dtrco.c dqrls.c
+SOURCES_F = 
+#	dqrls.f
+#	dchdc.f dpbfa.f dpbsl.f dpoco.f dpodi.f dpofa.f dposl.f dqrdc.f 
+#	dqrdc2.f dqrls.f dqrsl.f dqrutl.f dsvdc.f dtrco.f dtrsl.f
 DEPENDS = $(SOURCES_C:.c=.d)
 OBJECTS_BLAS = @USE_EXTERNAL_BLAS_FALSE@ blas.o @COMPILE_FORTRAN_DOUBLE_COMPLEX_FALSE@ cmplxblas.o
 OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_F:.f=.o) \
@@ -28,7 +29,7 @@ DISTFILES = \
 	$(SOURCES_C) \
 	$(SOURCES_F)
 
-@WANT_R_SHLIB_TRUE@ALL_CFLAGS = $(ALL_CFLAGS_LO)
+@WANT_R_SHLIB_TRUE@ALL_CFLAGS = $(ALL_CFLAGS_LO) -I.
 @WANT_R_SHLIB_TRUE@ALL_FFLAGS = $(ALL_FFLAGS_LO)
 
 Rblas_la = libRblas$(R_DYLIB_EXT)

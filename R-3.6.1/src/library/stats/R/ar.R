@@ -131,7 +131,7 @@ ar.yw.default <-
     } else { ## univariate case
         if (xacf[1L] == 0) stop("zero-variance series")
         r <- as.double(drop(xacf))
-        z <- .Fortran(C_eureka, as.integer(order.max), r, r,
+        z <- .C(C_eureka, as.integer(order.max), r, r,
                       coefs = double(order.max^2),
                       vars = double(order.max),
                       double(order.max))

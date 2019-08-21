@@ -23,6 +23,7 @@ qr <- function(x, ...) UseMethod("qr")
 
 qr.default <- function(x, tol = 1e-07, LAPACK = FALSE, ...)
 {
+  if(LAPACK==FALSE) warning("qr.default: we removed LINPACK based QR, might crash like right now")
     x <- as.matrix(x)
     if(is.complex(x))
         return(structure(.Internal(La_qr_cmplx(x)), class = "qr"))
@@ -36,7 +37,7 @@ qr.default <- function(x, tol = 1e-07, LAPACK = FALSE, ...)
     if(is.na(n)) stop("invalid nrow(x)")
     if(1.0 * n * p > 2147483647) stop("too large a matrix for LINPACK")
     storage.mode(x) <- "double"
-    res <- .Fortran(.F_dqrdc2,
+    res <- .C(.C_dqrdc2,
 	     qr = x,
 	     n,
 	     n,
@@ -78,7 +79,7 @@ qr.coef <- function(qr, y)
 	coef[qr$pivot, ] <- .Internal(qr_coef_real(qr, y))[ix, ]
     } else if (k > 0L) { ## else "Linpack" case, k > 0 :
 	storage.mode(y) <- "double"
-	z <- .Fortran(.F_dqrcf,
+	z <- .C(.C_dqrcf,
 		      as.double(qr$qr),
 		      n, k,
 		      as.double(qr$qraux),
@@ -123,7 +124,7 @@ qr.qy <- function(qr, y)
     storage.mode(y) <- "double"
     if(NROW(y) != n)
 	stop("'qr' and 'y' must have the same number of rows")
-    .Fortran(.F_dqrqy,
+    .C(.C_dqrqy,
 	     as.double(qr$qr),
 	     n, k,
 	     as.double(qr$qraux),
@@ -149,7 +150,7 @@ qr.qty <- function(qr, y)
     if(NROW(y) != n)
 	stop("'qr' and 'y' must have the same number of rows")
     storage.mode(y) <- "double"
-    .Fortran(.F_dqrqty,
+    .C(.C_dqrqty,
 	     as.double(qr$qr),
 	     n, k,
 	     as.double(qr$qraux),
@@ -173,7 +174,7 @@ qr.resid <- function(qr, y)
     if( NROW(y) != n )
 	stop("'qr' and 'y' must have the same number of rows")
     storage.mode(y) <- "double"
-    .Fortran(.F_dqrrsd,
+    .C(.C_dqrrsd,
 	     as.double(qr$qr), n, k, as.double(qr$qraux), y, ny, rsd = y)$rsd
 }
 
@@ -191,7 +192,7 @@ qr.fitted <- function(qr, y, k=qr$rank)
     if( NROW(y) != n )
 	stop("'qr' and 'y' must have the same number of rows")
     storage.mode(y) <- "double"
-    .Fortran(.F_dqrxb,
+    .C(.C_dqrxb,
 	     as.double(qr$qr), n, k, as.double(qr$qraux), y, ny, xb = y)$xb
 }
 

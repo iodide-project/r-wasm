@@ -45,7 +45,6 @@ cp /home/sguha/mz/r-wasm/R1/R-3.6.1/share/make/vars.mk share/make/
 cp /home/sguha/mz/r-wasm/R1/R-3.6.1/src/appl/dsvdc.f dtrsl.f src/appl/
 cp /home/sguha/mz/r-wasm/R1/R-3.6.1/src/appl/{ dtrsl.c dpofa.c dqrdc2.c dqrutl.c dpbfa.c dqrsl.c dqrdc.c dpbsl.c dsvdc.c dtrco.c dqrls.c src/appl/
 cp /home/sguha/mz/r-wasm/R1/R-3.6.1/src/appl/Makefile.in 
---> appl/ folder also contains lib2fc.h and libf2c.a
 
 /home/sguha/mz/r-wasm/R1/R-3.6.1/src/library/base/baseloader.R
 /home/sguha/mz/r-wasm/R1/R-3.6.1/src/library/base/R/kappa.R
@@ -71,28 +70,27 @@ sslvrg.c stxwx.c eureka.c stl.c
 You wont need to copy anything since commit X onward have the files modified.
 
 
-Now copy the `libf2c.a` file from `./CLAPACK-3.2.1/F2CLIBS/` and
-`./CLAPACK-3.2.1/F2CLIBS/libf2c/f2c.h` to  `R-3.6.1/src/appl/` _and_
-`R-3.6.1/src/library/stats/src/`.
 
 Next, inside R-3.6.1, (i made a `pref` folder above this)
 
 ```
- ./configure --prefix=$HOME/r-wasm/tmp/ --with-blas="-L/usr/lib64/atlas/ -ltatlas" --with-lapack  --with-x=no --enable-java=no --with-readline=no --with-recommended-packages=no  --enable-BLAS-shlib=no --enable-R-shlib=yes
- 
- make V=1 -j14 | tee -a what_run.txt
- make install help # tests will fail
+CPPFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" CFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" MAIN_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" SHLIB_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" \ 
+/configure --prefix=$HOME/r-wasm/R2/pref/  --with-blas="-L/usr/lib64/atlas/ -ltatlas"     --with-lapack  --with-x=no --enable-java=no \
+--with-readline=no --with-recommended-packages=no  --enable-BLAS-shlib=no --enable-R-shlib=yes --with-tcltk=no
+make V=1 -j15 | tee -a what_run.txt
+make install help
 
 ```
 
 Confirm that `what_run.txt` does not contain any calls to `gfortran` (except for
 -lgfortran which i *could not remove*).
 
-Now you can run some tests!
+Now you can run some tests! See https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Testing-a-Unix_002dalike-Installation
+Unfortunalty for some reason I've not been able to install help files fro the stats library. the tests depend on those help files being present.
 
 ```
 
-Also include is `what_run.txt` which is the output of my compile.
+
 
 
 

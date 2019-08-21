@@ -26,7 +26,33 @@
 #include <R_ext/Rdynload.h>
 #include <R_ext/Visibility.h>
 
+static R_NativePrimitiveArgType lowesw_t[] = {
+    REALSXP, INTSXP, REALSXP, INTSXP};
+static R_NativePrimitiveArgType lowesp_t[] = {
+    INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, REALSXP};
+
+
 #define C_DEF(name, n)  {#name, (DL_FUNC) &name, n}
+#define FDEF(name)  {#name, (DL_FUNC) &F77_NAME(name), sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
+
+/* static const R_FortranMethodDef FortEntries[] = { */
+    /* FDEF(lowesw), */
+    /* FDEF(lowesp), */
+/*     {"setppr", (DL_FUNC) &F77_NAME(setppr),  6}, */
+/*     {"smart",  (DL_FUNC) &F77_NAME(smart),  16}, */
+/*     {"pppred", (DL_FUNC) &F77_NAME(pppred),  5}, */
+/*     {"setsmu", (DL_FUNC) &F77_NAME(setsmu),  1}, */
+    /* {"rbart",  (DL_FUNC) &F77_NAME(rbart),  20}, */
+    /* {"bvalus", (DL_FUNC) &F77_NAME(bvalus),  7}, */
+/*     {"supsmu", (DL_FUNC) &F77_NAME(supsmu), 10}, */
+/*     {"hclust", (DL_FUNC) &F77_NAME(hclust), 10}, */
+/*     {"hcass2", (DL_FUNC) &F77_NAME(hcass2),  6}, */
+    /*  {"kmns",   (DL_FUNC) &F77_NAME(kmns),   17}, */
+    /* {"eureka", (DL_FUNC) &F77_NAME(eureka),  6}, */
+    /* {"stl",    (DL_FUNC) &F77_NAME(stl),    18}, */
+/*     {NULL, NULL, 0} */
+/* }; */
+
 
 static const R_CMethodDef CEntries[]  = {
     C_DEF(loess_raw, 24),
@@ -40,6 +66,13 @@ static const R_CMethodDef CEntries[]  = {
     C_DEF(kmeans_Lloyd, 9),
     C_DEF(kmeans_MacQueen, 9),
     C_DEF(rcont2,  8),
+    {"eureka", (DL_FUNC) &F77_NAME(eureka),  6},
+    FDEF(lowesw),
+    FDEF(lowesp),
+    {"rbart",  (DL_FUNC) &F77_NAME(rbart),  20},
+    {"bvalus", (DL_FUNC) &F77_NAME(bvalus),  7},
+    {"kmns",   (DL_FUNC) &F77_NAME(kmns),   17},
+    {"stl",    (DL_FUNC) &F77_NAME(stl),    18},
     {NULL, NULL, 0}
 };
 
@@ -87,9 +120,9 @@ static const R_CallMethodDef CallEntries[] = {
     CALLDEF(TSconv, 2),
     CALLDEF(getQ0, 2),
     CALLDEF(getQ0bis, 3),
-    CALLDEF(port_ivset, 3),
-    CALLDEF(port_nlminb, 9),
-    CALLDEF(port_nlsb, 7),
+    /* CALLDEF(port_ivset, 3), */
+    /* CALLDEF(port_nlminb, 9), */
+    /* CALLDEF(port_nlsb, 7), */
     CALLDEF(logit_link, 1),
     CALLDEF(logit_linkinv, 1),
     CALLDEF(logit_mu_eta, 1),
@@ -251,32 +284,27 @@ static const R_CallMethodDef CallEntries[] = {
     {NULL, NULL, 0}
 };
 
-#define FDEF(name)  {#name, (DL_FUNC) &F77_NAME(name), sizeof(name ## _t)/sizeof(name ## _t[0]), name ##_t}
 
 
-static R_NativePrimitiveArgType lowesw_t[] = {
-    REALSXP, INTSXP, REALSXP, INTSXP};
-static R_NativePrimitiveArgType lowesp_t[] = {
-    INTSXP, REALSXP, REALSXP, REALSXP, REALSXP, INTSXP, REALSXP};
 
 
-static const R_FortranMethodDef FortEntries[] = {
-    FDEF(lowesw),
-    FDEF(lowesp),
-    {"setppr", (DL_FUNC) &F77_NAME(setppr),  6},
-    {"smart",  (DL_FUNC) &F77_NAME(smart),  16},
-    {"pppred", (DL_FUNC) &F77_NAME(pppred),  5},
-    {"setsmu", (DL_FUNC) &F77_NAME(setsmu),  1},
-    {"rbart",  (DL_FUNC) &F77_NAME(rbart),  20},
-    {"bvalus", (DL_FUNC) &F77_NAME(bvalus),  7},
-    {"supsmu", (DL_FUNC) &F77_NAME(supsmu), 10},
-    {"hclust", (DL_FUNC) &F77_NAME(hclust), 10},
-    {"hcass2", (DL_FUNC) &F77_NAME(hcass2),  6},
-    {"kmns",   (DL_FUNC) &F77_NAME(kmns),   17},
-    {"eureka", (DL_FUNC) &F77_NAME(eureka),  6},
-    {"stl",    (DL_FUNC) &F77_NAME(stl),    18},
-    {NULL, NULL, 0}
-};
+/* static const R_FortranMethodDef FortEntries[] = { */
+    /* FDEF(lowesw), */
+    /* FDEF(lowesp), */
+/*     {"setppr", (DL_FUNC) &F77_NAME(setppr),  6}, */
+/*     {"smart",  (DL_FUNC) &F77_NAME(smart),  16}, */
+/*     {"pppred", (DL_FUNC) &F77_NAME(pppred),  5}, */
+/*     {"setsmu", (DL_FUNC) &F77_NAME(setsmu),  1}, */
+    /* {"rbart",  (DL_FUNC) &F77_NAME(rbart),  20}, */
+    /* {"bvalus", (DL_FUNC) &F77_NAME(bvalus),  7}, */
+/*     {"supsmu", (DL_FUNC) &F77_NAME(supsmu), 10}, */
+/*     {"hclust", (DL_FUNC) &F77_NAME(hclust), 10}, */
+/*     {"hcass2", (DL_FUNC) &F77_NAME(hcass2),  6}, */
+    /*  {"kmns",   (DL_FUNC) &F77_NAME(kmns),   17}, */
+    /* {"eureka", (DL_FUNC) &F77_NAME(eureka),  6}, */
+    /* {"stl",    (DL_FUNC) &F77_NAME(stl),    18}, */
+/*     {NULL, NULL, 0} */
+/* }; */
 
 #define EXTDEF(name, n)  {#name, (DL_FUNC) &name, n}
 // These argument counts are not checked
@@ -303,12 +331,13 @@ static const R_ExternalMethodDef ExtEntries[] = {
 
 void attribute_visible R_init_stats(DllInfo *dll)
 {
-    R_registerRoutines(dll, CEntries, CallEntries, FortEntries, ExtEntries);
+  //    R_registerRoutines(dll, CEntries, CallEntries, FortEntries, ExtEntries);
+      R_registerRoutines(dll, CEntries, CallEntries, NULL, ExtEntries);
     R_useDynamicSymbols(dll, FALSE);
     R_forceSymbols(dll, TRUE);
 
-    R_RegisterCCallable("stats", "nlminb_iterate", (DL_FUNC) nlminb_iterate);
-    R_RegisterCCallable("stats", "nlsb_iterate", (DL_FUNC) nlsb_iterate);
-    R_RegisterCCallable("stats", "Rf_divset", (DL_FUNC) Rf_divset);
+    // R_RegisterCCallable("stats", "nlminb_iterate", (DL_FUNC) nlminb_iterate);
+    //R_RegisterCCallable("stats", "nlsb_iterate", (DL_FUNC) nlsb_iterate);
+    //    R_RegisterCCallable("stats", "Rf_divset", (DL_FUNC) Rf_divset);
     R_RegisterCCallable("stats", "rcont2", (DL_FUNC) rcont2);
 }

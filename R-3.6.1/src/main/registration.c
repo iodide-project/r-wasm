@@ -77,14 +77,25 @@ static R_CallMethodDef callMethods [] = {
 #define FDEF(name, n)  {#name, (DL_FUNC) &F77_SYMBOL(name), n, NULL}
 static R_FortranMethodDef fortranMethods[] = {
     /* LINPACK */
-    FDEF(dqrcf, 8), // qr and auxiliaries
-    FDEF(dqrdc2, 9),
-    FDEF(dqrqty, 7),
-    FDEF(dqrqy, 7),
-    FDEF(dqrrsd, 7),
-    FDEF(dqrxb, 7),
-    FDEF(dtrco, 6), // .kappa_tri
+  //    FDEF(dqrcf, 8), // qr and auxiliaries
+  //    FDEF(dqrdc2, 9),
+  //    FDEF(dqrqty, 7),
+  //    FDEF(dqrqy, 7),
+  //    FDEF(dqrrsd, 7),
+  // FDEF(dqrxb, 7),
+  //  FDEF(dtrco, 6), // .kappa_tri
 
+    {NULL, NULL, 0}
+};
+
+static const R_CMethodDef fortran2CMethods[]  = {
+     FDEF(dqrcf, 8), // qr and auxiliaries
+     FDEF(dqrdc2, 9),
+     FDEF(dqrqty, 7),
+     FDEF(dqrqy, 7),
+     FDEF(dqrrsd, 7),
+     FDEF(dqrxb, 7),
+     FDEF(dtrco, 6), // .kappa_tri
     {NULL, NULL, 0}
 };
 
@@ -92,6 +103,6 @@ static R_FortranMethodDef fortranMethods[] = {
 void attribute_hidden
 R_init_base(DllInfo *dll)
 {
-    R_registerRoutines(dll, NULL, callMethods, fortranMethods, NULL);
+    R_registerRoutines(dll, fortran2CMethods, callMethods, NULL, NULL);
     R_useDynamicSymbols(dll, FALSE);
 }

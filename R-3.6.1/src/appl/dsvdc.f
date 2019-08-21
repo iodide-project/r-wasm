@@ -1,7 +1,7 @@
-c -- formerly called from R's  svd(x, ..., LINPACK = TRUE)  -- 
-c  Also called from loessf.f.
-
-c     Minimally modernized in 2018-09, so is fixed-form F90, not F77
+      subroutine dsvdc(x,ldx,n,p,s,e,u,ldu,v,ldv,work,job,info)
+      integer ldx,n,p,ldu,ldv,job,info
+      double precision x(ldx,1),s(1),e(1),u(ldu,1),v(ldv,1),work(1)
+c
 c
 c     dsvdc is a subroutine to reduce a double precision nxp matrix x
 c     by orthogonal transformations u and v to diagonal form.  the
@@ -93,32 +93,20 @@ c     linpack. this version dated 08/14/78 .
 c              correction made to shift 2/84.
 c     g.w. stewart, university of maryland, argonne national lab.
 c
-c     Modified 2000-12-28 to use a relative convergence test,
-c     as this was infinite-looping on ix86.
-c
 c     dsvdc uses the following functions and subprograms.
 c
 c     external drot
 c     blas daxpy,ddot,dscal,dswap,dnrm2,drotg
 c     fortran dabs,dmax1,max0,min0,mod,dsqrt
 c
-      subroutine dsvdc(x,ldx,n,p,s,e,u,ldu,v,ldv,work,job,info)
-      integer ldx,n,p,ldu,ldv,job,info
-      double precision x(ldx,*),s(*),e(*),u(ldu,*),v(ldv,*),work(*)
-c
 c     internal variables
 c
       integer i,iter,j,jobu,k,kase,kk,l,ll,lls,lm1,lp1,ls,lu,m,maxit,
      *        mm,mm1,mp1,nct,nctp1,ncu,nrt,nrtp1
-      double precision ddot,t
+      double precision ddot,t,r
       double precision b,c,cs,el,emm1,f,g,dnrm2,scale,shift,sl,sm,sn,
-     *                 smm1,t1,test,ztest,acc
+     *                 smm1,t1,test,ztest
       logical wantu,wantv
-c
-c     unnecessary initializations of l and ls to keep g77 -Wall happy
-c
-      l = 0
-      ls = 0
 c
 c
 c     set the maximum number of iterations.
@@ -330,9 +318,7 @@ c        ...exit
             if (l .eq. 0) go to 400
             test = dabs(s(l)) + dabs(s(l+1))
             ztest = test + dabs(e(l))
-            acc = dabs(test - ztest)/(1.0d-100 + test)
-            if (acc .gt. 1.d-15) goto 380
-c            if (ztest .ne. test) go to 380
+            if (ztest .ne. test) go to 380
                e(l) = 0.0d0
 c        ......exit
                go to 400
@@ -353,10 +339,7 @@ c           ...exit
                if (ls .ne. m) test = test + dabs(e(ls))
                if (ls .ne. l + 1) test = test + dabs(e(ls-1))
                ztest = test + dabs(s(ls))
-c 1.0d-100 is to guard against a zero matrix, hence zero test
-               acc = dabs(test - ztest)/(1.0d-100 + test)
-               if (acc .gt. 1.d-15) goto 420
-c               if (ztest .ne. test) go to 420
+               if (ztest .ne. test) go to 420
                   s(ls) = 0.0d0
 c           ......exit
                   go to 440
@@ -379,17 +362,7 @@ c           ......exit
 c
 c        perform the task indicated by kase.
 c
-c         go to (490,520,540,570), kase
-         select case(kase)
-         case(1)
-            goto 490
-         case(2)
-            goto 520
-         case(3)
-            goto 540
-         case(4)
-            goto 570
-         end select
+         go to (490,520,540,570), kase
 c
 c        deflate negligible s(m).
 c

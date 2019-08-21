@@ -250,9 +250,10 @@ loess_workspace(int *d, int *n, double *span, int *degree,
     }
     iv = Calloc(liv, int);
     v = Calloc(lv, double);
-
+    printf("OOPS\n");
     F77_CALL(lowesd)(&version, iv, &liv, &lv, v, d, n, span, degree,
 		    &nvmax, setLf);
+    printf("BACK\n");
     iv[32] = *nonparametric;
     for(i = 0; i < D; i++)
 	iv[i + 40] = drop_square[i];

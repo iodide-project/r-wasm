@@ -89,14 +89,15 @@ kappa.qr <- function(z, ...)
 	if(p != ncol(z)) stop("triangular matrix should be square")
 	if(is.null(norm)) norm <- "1"
 	if(is.complex(z)) 1/.Internal(La_ztrcon(z, norm))
-	else if(LINPACK) {
+      else if(LINPACK) {
+        warning("kappa: LINPACK BASED KAPPA modified to use f2c'd version of dtrco.f")
 	    if(norm == "I") # instead of "1" / "O"
 		z <- t(z)
 	    ##	dtrco  *differs* from Lapack's dtrcon() quite a bit
 	    ## even though dtrco's doc also say to compute the
 	    ## 1-norm reciprocal condition
             storage.mode(z) <- "double"
-	    1 / .Fortran(.F_dtrco, z, p, p, k = double(1), double(p), 1L)$k
+	    1 / .C(.C_dtrco, z, p, p, k = double(1), double(p), 1L)$k
 	}
 	else 1/.Internal(La_dtrcon(z, norm))
     }

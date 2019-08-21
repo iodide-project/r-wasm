@@ -17,25 +17,29 @@ R_INCLUDE_DIR = $(R_HOME)/include
 SOURCES_C = init.c kmeans.c \
   ansari.c bandwidths.c chisqsim.c d2x2xk.c fexact.c kendall.c ks.c \
   line.c smooth.c \
-  prho.c swilk.c \
-  ksmooth.c loessc.c monoSpl.c isoreg.c Srunmed.c \
+  prho.c swilk.c loessc.c \
+  ksmooth.c mAR.c\
+  monoSpl.c isoreg.c Srunmed.c \
   dblcen.c distance.c hclust-utils.c \
   nls.c rWishart.c \
   HoltWinters.c PPsum.c arima.c burg.c filter.c \
-  mAR.c pacf.c starma.c port.c family.c sbart.c \
+  pacf.c starma.c sbart.c family.c \
   approx.c loglin.c lowess.c massdist.c splines.c lm.c \
   complete_cases.c cov.c deriv.c fft.c fourier.c model.c optim.c optimize.c \
-  integrate.c random.c distn.c zeroin.c rcont.c influence.c
+  integrate.c random.c distn.c zeroin.c rcont.c influence.c \
+  bsplvd.c lminfl.c kmns.c bvalue.c bvalus.c loessf.c qsbart.c sgram.c sinerp.c sslvrg.c stxwx.c eureka.c stl.c
+#  port.c (this puzzles me - referneces fortrun i cnt find)
 
-SOURCES_F = bsplvd.f bvalue.f bvalus.f loessf.f ppr.f qsbart.f \
-  sgram.f sinerp.f sslvrg.f stxwx.f \
-  hclust.f kmns.f \
-  eureka.f stl.f portsrc.f lminfl.f
+SOURCES_F =
+#bsplvd.f bvalue.f bvalus.f loessf.f ppr.f qsbart.f \
+#  sgram.f sinerp.f sslvrg.f stxwx.f \
+#  hclust.f kmns.f \
+#  eureka.f stl.f portsrc.f lminfl.f
 DEPENDS = $(SOURCES_C:.c=.d)
 OBJECTS = $(SOURCES_C:.c=.o) $(SOURCES_F:.f=.o)
 
 # need config.h
-PKG_CPPFLAGS = -I../../../include -I$(top_srcdir)/src/include -DHAVE_CONFIG_H
+PKG_CPPFLAGS = -fPIC -I. -I../../../include -I$(top_srcdir)/src/include -DHAVE_CONFIG_H
 PKG_CFLAGS = @R_OPENMP_CFLAGS@ $(C_VISIBILITY)
 PKG_FFLAGS = $(F_VISIBILITY)
 
@@ -45,7 +49,8 @@ SHLIB = $(pkg)@SHLIB_EXT@
 ## We should really add FLIBS to SHLIB_LIBADD, but we need to include
 ## the shlib Makeconf at a later stage, and its default value would
 ## override our setting.
-PKG_LIBS = @R_OPENMP_CFLAGS@ $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
+PKG_LIBS =  @R_OPENMP_CFLAGS@  $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) -lf2c  -lm 
+#PKG_LIBS =  @R_OPENMP_CFLAGS@  $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS)
 ## </FIXME>
 
 
