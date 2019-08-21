@@ -86,23 +86,10 @@ Confirm that `what_run.txt` does not contain any calls to `gfortran` (except for
 -lgfortran which i *could not remove*).
 
 Now you can run some tests! See https://cran.r-project.org/doc/manuals/r-release/R-admin.html#Testing-a-Unix_002dalike-Installation
-Unfortunalty for some reason I've not been able to install help files fro the stats library. the tests depend on those help files being present.
+Unfortunately for some reason I've not been able to install help files fro the stats library. the tests depend on those help files being present.
 
 
-```
-
-
-
-
-
-
-
-
-
-
-
-
-[1] output of /proc/cpuinfo
+1. output of /proc/cpuinfo
 
 ```
     processor       : 15
