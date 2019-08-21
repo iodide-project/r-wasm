@@ -75,8 +75,7 @@ Next, inside R-3.6.1, (i made a `pref` folder above this)
 
 ```
 CPPFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" CFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" MAIN_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" SHLIB_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" \ 
-/configure --prefix=$HOME/r-wasm/R2/pref/  --with-blas="-L/usr/lib64/atlas/ -ltatlas"     --with-lapack  --with-x=no --enable-java=no \
---with-readline=no --with-recommended-packages=no  --enable-BLAS-shlib=no --enable-R-shlib=yes --with-tcltk=no
+./configure --prefix=$HOME/r-wasm/R2/pref/  --with-blas="-L/usr/lib64/atlas/ -ltatlas"     --with-lapack  --with-x=no --enable-java=no --with-readline=no --with-recommended-packages=no  --enable-BLAS-shlib=no --enable-R-shlib=yes --with-tcltk=no
 make V=1 -j15 | tee -a what_run.txt
 make install help
 
