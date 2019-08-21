@@ -71,7 +71,7 @@ onward have the files modified.
 
 
 
-Next, inside R-3.6.1, (i made a `pref` folder above this)
+Next, inside R-3.6.1, (i made a `pref` folder above this). Change the paths to reflect your installation
 
 ```
 CPPFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" CFLAGS="-I$HOME/mz/r-wasm/R2/libf2c" MAIN_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" SHLIB_LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" LDFLAGS="-L$HOME/mz/r-wasm/R2/libf2c/" \ 
