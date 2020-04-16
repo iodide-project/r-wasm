@@ -18,7 +18,7 @@ Repo
 ```
 
 
-Read README in f2clib. For hala[1], i had to run
+Read README in f2clib. For hala[1], i had to run 
 
 ```
         mv f2c.h f2c.h0
@@ -26,7 +26,7 @@ Read README in f2clib. For hala[1], i had to run
 ```
 
 (see the README file in that folder). This is important else all R calls to
-fortran result in segfaults of random errors. ALSO compile with `CFLAGS=-fPIC`.
+fortran result in segfaults of random errors. ALSO compile with `CFLAGS=-fPIC` (by editing makefile.u and saving as Makefile)
 
 
 ```
